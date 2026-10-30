@@ -1,19 +1,24 @@
-from . import commands
+import sys
+
+from . import args
+
 
 def main():
     
-    active = True;
-    
-    while active:
-        print()
-        command = input("$ ")
+    if len(sys.argv) > 1:
+        sys.exit(args.run(sys.argv[1:]))
         
-        if command[0:4] == "exit":
+    repl()
+        
+def repl():
+    
+    while True:
+        print()
+        try:
+            line = input("$ ")
+        except (EOFError, KeyboardInterrupt):
             break
-        if command[0:4] == "help":
-            commands.help_command()
-
-        if command not in commands.command_dict:
-            print(command + ": is not a valid command.")
-        pass
+        args.run_line(line)
+    
+        
     
